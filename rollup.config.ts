@@ -20,7 +20,7 @@ const config = {
       requireReturnsDefault: 'auto'
     })
   ],
-  external: ['@actions/core']
+  external: []
 }
 
 export default config
