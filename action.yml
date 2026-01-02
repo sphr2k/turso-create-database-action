@@ -1,23 +1,60 @@
-name: The name of your action here
-description: Provide a description here
-author: Your name or organization here
+name: 'Create Turso Database'
 
-# Add your action's branding here. This will appear on the GitHub Marketplace.
+description:
+  'Create or fork a Turso database'
+
+author: 'Jan Werner'
+
 branding:
-  icon: heart
-  color: red
+  color: 'green'
+  icon: 'database'
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: Your input description here
+  organization_name:
+    description:
+      'The name of the organization or account where this action will be
+      performed.'
     required: true
-    default: '1000'
+  api_token:
+    description: 'The API token that has access to the organization or account.'
+    required: true
+  existing_database_name:
+    description: 'The name of the existing database.'
+    required: true
+  new_database_name:
+    description: 'The new database name.'
+    required: true
+  group_name:
+    description: 'The group name the database should be created in.'
+    required: false
+  create_database_token:
+    description:
+      'Whether to create and output a database authentication token. Defaults to
+      false.'
+    required: false
+    default: 'false'
+  replace:
+    description:
+      'Whether to replace (delete and recreate) the target database if it already exists. Only works when existing_database_name is provided. Defaults to false.'
+    required: false
+    default: 'false'
+  dry_run:
+    description:
+      'If true, validates inputs and shows what would happen without making any actual API calls. Defaults to false.'
+    required: false
+    default: 'false'
 
 # Define your outputs here.
 outputs:
-  time:
-    description: Your output description here
+  hostname:
+    description: 'The database hostname without protocol.'
+  database_url:
+    description: 'The full database URL (libsql://hostname).'
+  database_token:
+    description:
+      'The database authentication token (only set if create_database_token is
+      true).'
 
 runs:
   using: node24
