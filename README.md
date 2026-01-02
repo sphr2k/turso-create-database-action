@@ -127,6 +127,7 @@ This action is built with TypeScript and uses `pnpm` for package management.
    ```
 
 4. Run all checks (format, lint, test, build):
+
    ```bash
    pnpm run all
    ```
