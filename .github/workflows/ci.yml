@@ -53,12 +53,36 @@ jobs:
         id: checkout
         uses: actions/checkout@v6
 
-      - name: Test Local Action
+      - name: Setup Node.js
+        id: setup-node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install Dependencies
+        id: npm-ci
+        run: npm ci
+
+      - name: Build Action
+        id: build
+        run: npm run package
+
+      - name: Test Local Action (Dry Run)
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          organization_name: test-org
+          api_token: test-token
+          existing_database_name: test-existing-db
+          new_database_name: test-new-db
+          group_name: default
+          replace: false
+          create_database_token: false
+          dry_run: true
 
-      - name: Print Output
-        id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+      - name: Verify Dry Run Completed
+        id: verify
+        run: |
+          echo "Action completed successfully in dry-run mode"
+          echo "No outputs expected in dry-run mode"
