@@ -81,5 +81,12 @@ export default [
       'no-unused-vars': 'off',
       'prettier/prettier': 'error'
     }
+  },
+  {
+    // Allow 'any' in test files for mocking flexibility
+    files: ['**/__tests__/**/*.ts', '**/__fixtures__/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
   }
 ]

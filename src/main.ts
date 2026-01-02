@@ -1,5 +1,14 @@
 import * as core from '@actions/core'
-import { createClient, TursoClientError } from '@tursodatabase/api'
+import { createClient } from '@tursodatabase/api'
+
+// Helper to check if error is a TursoClientError
+// Note: TursoClientError is not exported in the JS bundle, so we check by name
+function isTursoClientError(error: unknown): error is Error & { name: string } {
+  return (
+    error instanceof Error &&
+    (error as Error & { name?: string }).name === 'TursoClientError'
+  )
+}
 
 /**
  * The main function for the action.
@@ -46,11 +55,17 @@ export async function run(): Promise<void> {
         core.info(`  Group: (would be fetched from ${existingDatabaseName})`)
       }
       if (replace) {
-        core.info(`  Replace: Would check if '${newDatabaseName}' exists and delete if found`)
+        core.info(
+          `  Replace: Would check if '${newDatabaseName}' exists and delete if found`
+        )
       }
-      core.info(`  Create database: Would create '${newDatabaseName}' seeded from '${existingDatabaseName}'`)
+      core.info(
+        `  Create database: Would create '${newDatabaseName}' seeded from '${existingDatabaseName}'`
+      )
       if (createDatabaseToken) {
-        core.info(`  Create token: Would create authentication token for '${newDatabaseName}'`)
+        core.info(
+          `  Create token: Would create authentication token for '${newDatabaseName}'`
+        )
       }
       core.info('')
       core.info('✓ Dry-run completed - all inputs validated')
@@ -79,7 +94,7 @@ export async function run(): Promise<void> {
         resolvedGroupName = existingDb.group
         core.info(`Found group: ${resolvedGroupName}`)
       } catch (error) {
-        if (error instanceof TursoClientError) {
+        if (isTursoClientError(error)) {
           core.setFailed(`Failed to fetch database: ${error.message}`)
         } else if (error instanceof Error) {
           core.setFailed(`Failed to fetch database: ${error.message}`)
@@ -103,7 +118,7 @@ export async function run(): Promise<void> {
             `✓ Successfully deleted existing database fork '${newDatabaseName}'`
           )
         } catch (error) {
-          if (error instanceof TursoClientError) {
+          if (isTursoClientError(error)) {
             core.setFailed(
               `Failed to delete existing database fork: ${error.message}`
             )
@@ -119,7 +134,7 @@ export async function run(): Promise<void> {
           return
         }
       } catch (error) {
-        if (error instanceof TursoClientError) {
+        if (isTursoClientError(error)) {
           // Check if it's a 404 (database doesn't exist)
           const errorMsg = error.message.toLowerCase()
           if (errorMsg.includes('404') || errorMsg.includes('not found')) {
@@ -140,7 +155,9 @@ export async function run(): Promise<void> {
           )
           return
         } else {
-          core.setFailed('Failed to check if database fork exists: Unknown error')
+          core.setFailed(
+            'Failed to check if database fork exists: Unknown error'
+          )
           return
         }
       }
@@ -160,7 +177,7 @@ export async function run(): Promise<void> {
         }
       })
     } catch (error) {
-      if (error instanceof TursoClientError) {
+      if (isTursoClientError(error)) {
         const errorMsg = error.message
         let failureMessage = `Failed to create database fork: ${errorMsg}`
         if (!replace) {
@@ -179,7 +196,8 @@ export async function run(): Promise<void> {
 
     // Handle both lowercase and uppercase hostname property names
     const hostname =
-      createdDatabase.hostname || (createdDatabase as any).Hostname
+      createdDatabase.hostname ||
+      (createdDatabase as { Hostname?: string }).Hostname
     if (!hostname) {
       core.setFailed('Hostname not found in response')
       return
@@ -208,7 +226,7 @@ export async function run(): Promise<void> {
         core.info('Database token created successfully')
         core.setOutput('database_token', token.jwt)
       } catch (error) {
-        if (error instanceof TursoClientError) {
+        if (isTursoClientError(error)) {
           core.setFailed(`Failed to create database token: ${error.message}`)
         } else if (error instanceof Error) {
           core.setFailed(`Failed to create database token: ${error.message}`)

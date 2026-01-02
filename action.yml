@@ -1,7 +1,6 @@
 name: 'Create Turso Database'
 
-description:
-  'Create or fork a Turso database'
+description: 'Create or fork a Turso database'
 
 author: 'Jan Werner'
 
@@ -36,12 +35,15 @@ inputs:
     default: 'false'
   replace:
     description:
-      'Whether to replace (delete and recreate) the target database if it already exists. Only works when existing_database_name is provided. Defaults to false.'
+      'Whether to replace (delete and recreate) the target database if it
+      already exists. Only works when existing_database_name is provided.
+      Defaults to false.'
     required: false
     default: 'false'
   dry_run:
     description:
-      'If true, validates inputs and shows what would happen without making any actual API calls. Defaults to false.'
+      'If true, validates inputs and shows what would happen without making any
+      actual API calls. Defaults to false.'
     required: false
     default: 'false'
 

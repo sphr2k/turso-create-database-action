@@ -249,7 +249,6 @@ describe('main.ts', () => {
       }
       return inputs[name] || ''
     })
-
     ;(mockClient.databases.get as any).mockResolvedValue({
       group: 'fetched-group'
     })
@@ -287,7 +286,6 @@ describe('main.ts', () => {
       }
       return inputs[name] || ''
     })
-
     ;(mockClient.databases.get as any).mockRejectedValue(
       new tursoApi.TursoClientError('Database not found')
     )
@@ -314,7 +312,6 @@ describe('main.ts', () => {
       }
       return inputs[name] || ''
     })
-
     ;(mockClient.databases.get as any).mockRejectedValue(
       new Error('Network error')
     )
@@ -341,7 +338,6 @@ describe('main.ts', () => {
       }
       return inputs[name] || ''
     })
-
     ;(mockClient.databases.get as any).mockResolvedValue({
       // No group property
     })
@@ -441,7 +437,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'replace'
     })
-
     ;(mockClient.databases.get as any).mockResolvedValue({
       group: 'default'
     })
@@ -461,7 +456,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'replace'
     })
-
     ;(mockClient.databases.get as any).mockResolvedValue({
       group: 'default'
     })
@@ -505,7 +499,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'replace'
     })
-
     ;(mockClient.databases.get as any).mockResolvedValue({
       group: 'default'
     })
@@ -529,7 +522,9 @@ describe('main.ts', () => {
 
     await run()
 
-    expect(core.setFailed).toHaveBeenCalledWith('Hostname not found in response')
+    expect(core.setFailed).toHaveBeenCalledWith(
+      'Hostname not found in response'
+    )
     expect(core.setOutput).not.toHaveBeenCalled()
   })
 
@@ -556,7 +551,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'create_database_token'
     })
-
     ;(mockClient.databases.createToken as any).mockResolvedValue({
       jwt: 'test-jwt-token'
     })
@@ -569,14 +563,15 @@ describe('main.ts', () => {
       'database_token',
       'test-jwt-token'
     )
-    expect(core.info).toHaveBeenCalledWith('Database token created successfully')
+    expect(core.info).toHaveBeenCalledWith(
+      'Database token created successfully'
+    )
   })
 
   it('Handles error when creating database token', async () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'create_database_token'
     })
-
     ;(mockClient.databases.createToken as any).mockRejectedValue(
       new tursoApi.TursoClientError('Token creation failed')
     )
@@ -592,7 +587,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'create_database_token'
     })
-
     ;(mockClient.databases.createToken as any).mockRejectedValue(
       new Error('Token network error')
     )
@@ -608,7 +602,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'create_database_token'
     })
-
     ;(mockClient.databases.createToken as any).mockResolvedValue({
       // No jwt property
     })
@@ -679,7 +672,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'replace'
     })
-
     ;(mockClient.databases.get as any).mockRejectedValue('String error')
 
     await run()
@@ -695,7 +687,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'replace'
     })
-
     ;(mockClient.databases.get as any).mockResolvedValue({
       group: 'default'
     })
@@ -712,7 +703,6 @@ describe('main.ts', () => {
     core.getBooleanInput.mockImplementation((name: string) => {
       return name === 'create_database_token'
     })
-
     ;(mockClient.databases.createToken as any).mockRejectedValue('String error')
 
     await run()
@@ -736,7 +726,6 @@ describe('main.ts', () => {
       }
       return inputs[name] || ''
     })
-
     ;(mockClient.databases.get as any).mockRejectedValue('String error')
 
     await run()
